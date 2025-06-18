@@ -1,0 +1,169 @@
+.applicationsForm {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .formSection  {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: rgb(242 228 242);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .gridSection{
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(56, 54, 54, 0.1);
+
+
+  }
+
+  .formRow {
+    //display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+  }
+
+  .formGroup {
+    flex: 1;
+    min-width: 200px;
+    margin: 0 10px 15px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+
+  input {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  select {
+    width: 97%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .error {
+    border-color: #ff0000;
+  }
+
+  .errorMessage {
+    color: #ff0000;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+
+  .buttonGroup {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+
+  button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+
+  .saveButton {
+    background-color: #340764;
+    color: white;
+    margin-left: 632px;
+
+    &:hover {
+      background-color: #106ebe;
+    }
+  }
+
+  .cancelButton {
+    background-color: #340764;
+    color: white;
+    margin-left: 20px;
+
+    &:hover {
+      background-color: #106ebe;
+    }
+  }
+
+  .gridContainer {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+
+  th {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+
+  }
+  td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #131212;
+  }
+
+  th {
+    background-color: #2c2828;
+    color:whitesmoke;
+    font-weight: 600;
+  }
+
+  tr:hover {
+    background-color: #f5f5f5;
+  }
+}
+// @import '~@fluentui/react/dist/sass/References.scss';
+
+// .applicationsForm {
+//   overflow: hidden;
+//   padding: 1em;
+//   color: "[theme:bodyText, default: #323130]";
+//   color: var(--bodyText);
+//   &.teams {
+//     font-family: $ms-font-family-fallbacks;
+//   }
+// }
+
+// .welcome {
+//   text-align: center;
+// }
+
+// .welcomeImage {
+//   width: 100%;
+//   max-width: 420px;
+// }
+
+// .links {
+//   a {
+//     text-decoration: none;
+//     color: "[theme:link, default:#03787c]";
+//     color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+
+//     &:hover {
+//       text-decoration: underline;
+//       color: "[theme:linkHovered, default: #014446]";
+//       color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+//     }
+//   }
+// }

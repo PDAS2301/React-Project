@@ -1,0 +1,24 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
+  "port": 4321,
+  "https": true,
+  //"initialPage": "https://{tenantDomain}/_layouts/workbench.aspx"
+   //"initialPage":"https://divanshi78.sharepoint.com/sites/Application_form/_layouts/workbench.aspx"
+   "serveConfigurations": {
+    "default": {
+      "pageUrl":"https://divanshi78.sharepoint.com/sites/Application_form/SitePages/ProjectHome.aspx"
+     //"pageUrl":"https://divanshi78.sharepoint.com/sites/Application_form/SitePages/Page.aspx"
+   },
+   "sppage":{
+    "pageUrl":"https://divanshi78.sharepoint.com/sites/Application_form/SitePages/ProjectHome.aspx"
+   }
+  
+   }  
+}
+
+// {
+//   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
+//   "port": 4321,
+//   "https": true,
+//   "initialPage": "https://{tenantDomain}/_layouts/workbench.aspx"
+// }

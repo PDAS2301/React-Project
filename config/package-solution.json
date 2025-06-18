@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "applications-integration-client-side-solution",
+    "id": "f67b892e-5c0f-49a3-ae3c-985f2bef508a",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.18.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "ApplicationsIntegration description"
+      },
+      "longDescription": {
+        "default": "ApplicationsIntegration description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "applications-integration Feature",
+        "description": "The feature that activates elements of the applications-integration solution.",
+        "id": "ecd36605-53e2-4258-bea6-79345019b7f8",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/applications-integration.sppkg"
+  }
+}
