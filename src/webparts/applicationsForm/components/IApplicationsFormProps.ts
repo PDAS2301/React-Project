@@ -15,6 +15,8 @@ export interface IApplicationsFormState {
     applicationName: string;
     contact: string;
   };
+  flag:boolean;
+  resetflag:boolean;
 }
 // export interface IApplicationsFormProps {
 //   description: string;

@@ -1,10 +1,16 @@
-import * as React from 'react';
-import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
-import { IApplicationsFormProps, IApplicationsFormState } from './IApplicationsFormProps';
+import * as React from "react";
+import { SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
+import {
+  IApplicationsFormProps,
+  IApplicationsFormState,
+} from "./IApplicationsFormProps";
 //import { IApplicationsListItem } from './IApplicationsListItem';
-import styles from './ApplicationsForm.module.scss';
+import styles from "./ApplicationsForm.module.scss";
 
-export default class ApplicationsForm extends React.Component<IApplicationsFormProps, IApplicationsFormState> {
+export default class ApplicationsForm extends React.Component<
+  IApplicationsFormProps,
+  IApplicationsFormState
+> {
   private listName: string = "Applications";
 
   constructor(props: IApplicationsFormProps) {
@@ -12,13 +18,15 @@ export default class ApplicationsForm extends React.Component<IApplicationsFormP
 
     this.state = {
       items: [],
-      applicationName: '',
-      applicationType: 'COTS',
-      contact: '',
+      applicationName: "",
+      applicationType: "---Select---",
+      contact: "",
       errors: {
-        applicationName: '',
-        contact: ''
-      }
+        applicationName: "",
+        contact: "",
+      },
+      flag: false,
+      resetflag: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -34,55 +42,64 @@ export default class ApplicationsForm extends React.Component<IApplicationsFormP
   private loadItems(): void {
     const { context } = this.props;
 
-    context.spHttpClient.get(
-      `${context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('${this.listName}')/items?$select=Id,Title,ApplicationType,Contact`,
-      SPHttpClient.configurations.v1
-    )
-    .then((response: SPHttpClientResponse) => response.json())
-    .then((response) => {
-      this.setState({
-        items: response.value
+    context.spHttpClient
+      .get(
+        `${context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('${this.listName}')/items?$select=Id,Title,ApplicationType,Contact`,
+        SPHttpClient.configurations.v1
+      )
+      .then((response: SPHttpClientResponse) => response.json())
+      .then((response) => {
+        this.setState({
+          items: response.value,
+        });
+      })
+      .catch((error) => {
+        console.error("Error loading items:", error);
       });
-    })
-    .catch((error) => {
-      console.error('Error loading items:', error);
-    });
   }
 
-  private handleInputChange(event: React.FormEvent<HTMLInputElement | HTMLSelectElement>): void {
+  private handleInputChange(
+    event: React.FormEvent<HTMLInputElement | HTMLSelectElement>
+  ): void {
     const { name, value } = event.currentTarget;
 
     this.setState({
       ...this.state,
-      [name]: value
+      [name]: value,
     });
   }
 
   private validateForm(): boolean {
     let isValid = true;
     const errors = {
-      applicationName: '',
-      contact: ''
+      applicationName: "",
+      contact: "",
     };
 
     // Validate Application Name
-    if (!this.state.applicationName || this.state.applicationName.length < 3 || this.state.applicationName.length > 50) {
-      errors.applicationName = 'Application Name must be between 3 and 50 characters';
+    if (
+      !this.state.applicationName ||
+      this.state.applicationName.length < 3 ||
+      this.state.applicationName.length > 50
+    ) {
+      errors.applicationName =
+        "Application Name must be between 3 and 50 characters";
       isValid = false;
     } else if (/[^a-zA-Z0-9 ]/.test(this.state.applicationName)) {
-      errors.applicationName = 'Application Name cannot contain special characters';
+      errors.applicationName =
+        "Application Name cannot contain special characters";
       isValid = false;
     }
 
     // Validate Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!this.state.contact || !emailRegex.test(this.state.contact)) {
-      errors.contact = 'Please enter a valid email address';
+      errors.contact = "Please enter a valid email address";
       isValid = false;
     }
 
     this.setState({
-      errors: errors
+      errors: errors,
     });
 
     return isValid;
@@ -90,7 +107,7 @@ export default class ApplicationsForm extends React.Component<IApplicationsFormP
 
   private handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-
+    debugger;
     if (!this.validateForm()) {
       return;
     }
@@ -101,49 +118,70 @@ export default class ApplicationsForm extends React.Component<IApplicationsFormP
     const body: string = JSON.stringify({
       Title: applicationName,
       ApplicationType: applicationType,
-      Contact: contact
+      Contact: contact,
+    });
+    debugger;
+    context.spHttpClient
+      .post(
+        `${context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('${this.listName}')/items`,
+        SPHttpClient.configurations.v1,
+        {
+          headers: {
+            Accept: "application/json;odata=nometadata",
+            "Content-type": "application/json;odata=nometadata",
+            "odata-version": "",
+          },
+          body: body,
+        }
+      )
+      .then((response: SPHttpClientResponse) => response.json())
+      .then(() => {
+        this.setState({
+          applicationName: "",
+          applicationType: "---Select---",
+          contact: "",
+        });
+        this.loadItems();
+      })
+      .catch((error) => {
+        console.error("Error saving item:", error);
+      });
+    debugger;
+    this.setState({
+      flag: true,
     });
 
-    context.spHttpClient.post(
-      `${context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('${this.listName}')/items`,
-      SPHttpClient.configurations.v1,
-      {
-        headers: {
-          'Accept': 'application/json;odata=nometadata',
-          'Content-type': 'application/json;odata=nometadata',
-          'odata-version': ''
-        },
-        body: body
-      }
-    )
-    .then((response: SPHttpClientResponse) => response.json())
-    .then(() => {
-      this.setState({
-        applicationName: '',
-        applicationType: 'COTS',
-        contact: ''
-      });
-      this.loadItems();
-    })
-    .catch((error) => {
-      console.error('Error saving item:', error);
-    });
+    setTimeout(() => {
+      this.setState({ flag: false });
+    }, 3000); // 3seconds = 3000 milliseconds
   }
 
   private handleCancel(): void {
     this.setState({
-      applicationName: '',
-      applicationType: 'COTS',
-      contact: '',
+      applicationName: "",
+      applicationType: "---Select---",
+      contact: "",
       errors: {
-        applicationName: '',
-        contact: ''
-      }
+        applicationName: "",
+        contact: "",
+      },
+      resetflag:true,
     });
+
+    this.setState({
+      resetflag:true,
+    })
+
+    setTimeout(() => {
+      this.setState({ resetflag: false });
+    }, 3000); // 3seconds = 3000 milliseconds
+  
+
   }
 
   public render(): React.ReactElement<IApplicationsFormProps> {
-    const { items, applicationName, applicationType, contact, errors } = this.state;
+    const { items, applicationName, applicationType, contact, errors, flag,resetflag } =
+      this.state;
 
     return (
       <div className={styles.applicationsForm}>
@@ -160,11 +198,15 @@ export default class ApplicationsForm extends React.Component<IApplicationsFormP
                     name="applicationName"
                     value={applicationName}
                     onChange={this.handleInputChange}
-                    className={errors.applicationName ? styles.error : ''}
+                    className={errors.applicationName ? styles.error : ""}
                   />
-                  {errors.applicationName && <div className={styles.errorMessage}>{errors.applicationName}</div>}
+                  {errors.applicationName && (
+                    <div className={styles.errorMessage}>
+                      {errors.applicationName}
+                    </div>
+                  )}
                 </div>
-                
+
                 <div className={styles.formGroup}>
                   <label htmlFor="applicationType">Application Type:</label>
                   <select
@@ -178,7 +220,7 @@ export default class ApplicationsForm extends React.Component<IApplicationsFormP
                     <option value="Custom">Custom</option>
                   </select>
                 </div>
-                
+
                 <div className={styles.formGroup}>
                   <label htmlFor="contact">Contact Email:</label>
                   <input
@@ -187,22 +229,30 @@ export default class ApplicationsForm extends React.Component<IApplicationsFormP
                     name="contact"
                     value={contact}
                     onChange={this.handleInputChange}
-                    className={errors.contact ? styles.error : ''}
+                    className={errors.contact ? styles.error : ""}
                   />
-                  {errors.contact && <div className={styles.errorMessage}>{errors.contact}</div>}
+                  {errors.contact && (
+                    <div className={styles.errorMessage}>{errors.contact}</div>
+                  )}
                 </div>
               </div>
-              
+
               <div className={styles.buttonGroup}>
-                <button type="submit" className={styles.saveButton}>Save</button>
-                <div>
-                 Data Saved Successfully
-                 </div>
-                <button type="button" onClick={this.handleCancel} className={styles.cancelButton}>Reset</button>
+                <button type="submit" className={styles.saveButton}>
+                  Save
+                </button>
+
+                <button
+                  type="button"
+                  onClick={this.handleCancel}
+                  className={styles.cancelButton}
+                >
+                  Reset
+                </button>
               </div>
             </form>
           </div>
-          
+
           <div className={styles.gridSection}>
             <h2>Applications List</h2>
             <div className={styles.gridContainer}>
@@ -227,6 +277,18 @@ export default class ApplicationsForm extends React.Component<IApplicationsFormP
             </div>
           </div>
         </div>
+        {/* <div className={styles.saveAlert}><h1>Data Save Successfully!</h1></div> */}
+        {flag && (
+          <div className={styles.saveAlert}>
+            <h1>Data Save Successfully!</h1>
+          </div>
+        )}
+       {/* <div className={styles.saveAlert}><h1>Data Reset Successfully!</h1></div> */}
+       {resetflag && (
+       <div className={styles.saveAlert}>
+        <h1>Data Reset Successfully!</h1>
+        </div> 
+       )} 
       </div>
     );
   }

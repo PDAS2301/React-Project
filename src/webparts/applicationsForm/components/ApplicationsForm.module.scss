@@ -8,7 +8,7 @@
   .formSection  {
     margin-bottom: 30px;
     padding: 20px;
-    background-color: rgb(242 228 242);
+    background-color: #beccff;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
@@ -100,6 +100,21 @@
       background-color: #106ebe;
     }
   }
+
+  .saveAlert{
+    background: aquamarine;
+    height: 73px;
+    width: 32%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 35%;
+    position: absolute;
+    margin-top: -70%;
+    border-radius: 14px;
+
+  }
+
 
   .gridContainer {
     overflow-x: auto;
